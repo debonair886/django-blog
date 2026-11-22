@@ -1,0 +1,107 @@
+<!-- 文件路径：blog/templates/blog/index.html -->
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<h2 class="section-title">最新文章</h2>
+
+<!-- 搜索框：GET 提交，参数直接出现在 URL 里（/?q=xxx） -->
+<div class="search-bar">
+    <form method="get" action="{% url 'index' %}">
+        <div class="search-inner">
+            <input
+                type="text"
+                name="q"
+                value="{{ keyword }}"
+                placeholder="搜索文章标题或摘要..."
+                class="search-input"
+            />
+            {% if category_slug %}
+                <input type="hidden" name="category" value="{{ category_slug }}" />
+            {% endif %}
+            <button type="submit" class="search-btn">搜索</button>
+        </div>
+    </form>
+    {% if keyword %}
+        <a href="{% url 'index' %}{% if category_slug %}?category={{ category_slug }}{% endif %}" class="clear-link">✕ 清除搜索</a>
+    {% endif %}
+</div>
+
+<!-- 分类筛选导航 -->
+<div class="category-bar">
+    <a href="{% url 'index' %}{% if keyword %}?q={{ keyword|urlencode }}{% endif %}"
+       class="{% if not category_slug %}active{% endif %}">全部</a>
+
+    {% for cat in categories %}
+        <a href="{% url 'index' %}?category={{ cat.slug }}{% if keyword %}&amp;q={{ keyword|urlencode }}{% endif %}"
+           class="{% if category_slug == cat.slug %}active{% endif %}">
+            {{ cat.name }}
+        </a>
+    {% endfor %}
+</div>
+
+<!-- 筛选结果统计 -->
+<p class="result-info">
+    共 {{ total_count }} 篇{% if keyword %}，搜索「{{ keyword }}」{% endif %}{% if category_slug %}，分类「{{ category_slug }}」{% endif %}
+</p>
+
+{% if posts %}
+    <div class="article-grid">
+        {% for post in posts %}
+            <div class="article-card">
+                <a href="{% url 'post_detail' post.pk %}" class="card-link">
+                    <div class="card-content">
+                        <span class="card-category">{{ post.category.name }}</span>
+                        <h3>{{ post.title }}</h3>
+                        <p>
+                            {% if post.summary %}
+                                {{ post.summary|truncatechars:80 }}
+                            {% else %}
+                                {{ post.content|striptags|truncatechars:80 }}
+                            {% endif %}
+                        </p>
+                    </div>
+                </a>
+                <div class="card-content card-tail">
+                    <div class="card-footer">
+                        <span class="card-date">{{ post.created_at|date:"Y-m-d" }}</span>
+                        {% if user.is_authenticated %}
+                            <form method="post" action="{% url 'toggle_favorite' post.pk %}" class="fav-form">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                                <button type="submit" class="fav-btn-small"
+                                        title="{% if post.pk in favorite_ids %}取消收藏{% else %}收藏{% endif %}">
+                                    {% if post.pk in favorite_ids %}&#x2665;{% else %}&#9825;{% endif %}
+                                    <span class="fav-count">{{ post.favorite_count }}</span>
+                                </button>
+                            </form>
+                        {% else %}
+                            <span class="fav-count" title="登录后可收藏">&#9825; {{ post.favorite_count }}</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% else %}
+    <p class="empty-tip">没有找到匹配的文章</p>
+{% endif %}
+
+<!-- 分页：paginate_by = 12 -->
+{% if is_paginated %}
+    <nav class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?{% if keyword %}q={{ keyword|urlencode }}&amp;{% endif %}{% if category_slug %}category={{ category_slug }}&amp;{% endif %}page={{ page_obj.previous_page_number }}">上一页</a>
+        {% else %}
+            <span class="disabled">上一页</span>
+        {% endif %}
+
+        <span class="page-info">第 {{ page_obj.number }} / {{ page_obj.paginator.num_pages }} 页</span>
+
+        {% if page_obj.has_next %}
+            <a href="?{% if keyword %}q={{ keyword|urlencode }}&amp;{% endif %}{% if category_slug %}category={{ category_slug }}&amp;{% endif %}page={{ page_obj.next_page_number }}">下一页</a>
+        {% else %}
+            <span class="disabled">下一页</span>
+        {% endif %}
+    </nav>
+{% endif %}
+{% endblock %}

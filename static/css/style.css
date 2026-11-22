@@ -1,0 +1,477 @@
+/* 文件路径：static/css/style.css
+   RUNOOB 博客的全局样式。以前这 300 行都塞在 base.html 的 <style> 里，
+   现在抽出来单独维护，改样式不用碰模板。 */
+
+/* ---------- 基础 ---------- */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Microsoft YaHei', Roboto, sans-serif;
+    background: #f5f5f5;
+    color: #333;
+    line-height: 1.6;
+}
+
+a { color: #2c3e50; }
+img { max-width: 100%; height: auto; }
+
+/* ---------- 导航栏 ---------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 40px;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar .logo {
+    font-size: 22px;
+    font-weight: bold;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    transition: color 0.2s;
+}
+
+.nav-links a:hover { color: #2c3e50; }
+
+.user-name {
+    color: #2c3e50;
+    font-weight: 500;
+}
+
+.logout-form { display: inline; margin: 0; }
+
+.link-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    color: #333;
+    cursor: pointer;
+}
+
+.link-btn:hover { color: #c0392b; }
+
+/* ---------- 布局 ---------- */
+.container {
+    max-width: 960px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.section-title {
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+.footer {
+    text-align: center;
+    padding: 20px;
+    color: #999;
+    border-top: 1px solid #eee;
+}
+
+/* ---------- 提示消息 ---------- */
+.messages { margin-bottom: 20px; }
+
+.alert {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 10px;
+    border-left: 4px solid #2c3e50;
+    background: #f0f3f6;
+}
+
+.alert-success { border-left-color: #2e7d32; background: #e8f5e9; color: #1b5e20; }
+.alert-info    { border-left-color: #1565c0; background: #e3f2fd; color: #0d47a1; }
+.alert-error,
+.alert-danger  { border-left-color: #c0392b; background: #fdecea; color: #922b21; }
+.alert-warning { border-left-color: #f39c12; background: #fef5e7; color: #9c640c; }
+
+/* ---------- 搜索 & 分类筛选 ---------- */
+.search-bar { margin-bottom: 20px; }
+
+.search-inner { display: flex; gap: 10px; }
+
+.search-input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 2px solid #eee;
+    border-radius: 8px;
+    font-size: 15px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.search-input:focus { border-color: #2c3e50; }
+
+.search-btn {
+    padding: 0 24px;
+    border: none;
+    border-radius: 8px;
+    background: #2c3e50;
+    color: #fff;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.search-btn:hover { background: #1a252f; }
+
+.clear-link {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 13px;
+    color: #999;
+    text-decoration: none;
+}
+
+.clear-link:hover { color: #2c3e50; }
+
+.category-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+}
+
+.category-bar a {
+    padding: 6px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.category-bar a.active {
+    background: #2c3e50;
+    color: #fff;
+    border-color: #2c3e50;
+}
+
+.category-bar a:hover { border-color: #2c3e50; }
+
+.result-info {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 16px;
+}
+
+/* ---------- 文章卡片 ---------- */
+.article-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.article-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.article-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.card-content { padding: 20px; }
+
+.card-tail { padding-top: 0; }
+
+.card-category {
+    display: inline-block;
+    padding: 2px 10px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 12px;
+    font-size: 12px;
+    margin-bottom: 8px;
+}
+
+.article-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #222;
+}
+
+.article-card p {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 12px;
+}
+
+.card-date { font-size: 12px; color: #999; }
+
+.card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.empty-tip {
+    text-align: center;
+    color: #999;
+    padding: 60px 0;
+    font-size: 16px;
+}
+
+/* ---------- 收藏按钮 ---------- */
+.fav-form { display: inline; margin: 0; }
+
+.fav-btn,
+.fav-btn-small {
+    background: none;
+    border: 1px solid #f2d7d3;
+    border-radius: 20px;
+    cursor: pointer;
+    color: #e74c3c;
+    padding: 4px 12px;
+    transition: transform 0.2s, background 0.2s;
+}
+
+.fav-btn:hover,
+.fav-btn-small:hover {
+    transform: scale(1.05);
+    background: #fdf2f1;
+}
+
+.fav-btn-small { font-size: 14px; }
+
+.fav-count { font-size: 13px; color: #999; }
+
+/* ---------- 分页 ---------- */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    margin-top: 32px;
+    font-size: 14px;
+}
+
+.pagination a,
+.pagination .disabled {
+    padding: 6px 16px;
+    border: 1px solid #ddd;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #333;
+}
+
+.pagination a:hover { border-color: #2c3e50; }
+
+.pagination .disabled { color: #ccc; border-color: #eee; }
+
+.page-info { color: #999; }
+
+/* ---------- 文章详情 ---------- */
+.post-view {
+    max-width: 720px;
+    margin: 0 auto;
+}
+
+.post-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+}
+
+.category-tag {
+    display: inline-block;
+    padding: 4px 12px;
+    background: #e8f5e9;
+    color: #2e7d32;
+    border-radius: 12px;
+    font-size: 13px;
+    margin-bottom: 12px;
+    text-decoration: none;
+}
+
+.post-view h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+    line-height: 1.4;
+}
+
+.post-time {
+    color: #999;
+    font-size: 14px;
+    margin-bottom: 24px;
+}
+
+.post-summary {
+    padding: 12px 16px;
+    background: #f7f9fa;
+    border-left: 4px solid #e8f5e9;
+    border-radius: 6px;
+    color: #555;
+    font-size: 15px;
+    margin-bottom: 24px;
+}
+
+.content {
+    line-height: 1.8;
+    font-size: 16px;
+    color: #333;
+}
+
+.content h2 { margin: 24px 0 12px; font-size: 22px; }
+.content h3 { margin: 20px 0 10px; font-size: 18px; }
+.content p { margin-bottom: 12px; }
+.content ul,
+.content ol { margin: 0 0 12px 24px; }
+.content blockquote {
+    margin: 16px 0;
+    padding: 10px 16px;
+    background: #f7f9fa;
+    border-left: 4px solid #ddd;
+    color: #666;
+}
+.content img { border-radius: 8px; margin: 12px 0; }
+.content pre {
+    padding: 14px;
+    background: #2c3e50;
+    color: #f2f5f7;
+    border-radius: 8px;
+    overflow-x: auto;
+    margin-bottom: 12px;
+}
+
+.back-link {
+    display: inline-block;
+    margin-top: 40px;
+    color: #2c3e50;
+    text-decoration: none;
+}
+
+.back-link:hover { text-decoration: underline; }
+
+.related {
+    max-width: 720px;
+    margin: 40px auto 0;
+    padding-top: 24px;
+    border-top: 1px solid #eee;
+}
+
+.related h3 { font-size: 18px; margin-bottom: 12px; }
+.related ul { list-style: none; }
+.related li { margin-bottom: 8px; }
+.related li a { text-decoration: none; }
+.related li a:hover { text-decoration: underline; }
+
+/* ---------- 登录 / 注册表单 ---------- */
+.auth-form {
+    max-width: 420px;
+    margin: 40px auto;
+    padding: 30px;
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
+.auth-form h2 {
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.auth-form .form-group { margin-bottom: 16px; }
+
+.auth-form label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 500;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.auth-form input:focus {
+    outline: none;
+    border-color: #2c3e50;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: #2c3e50;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.btn-submit:hover { background: #1a252f; }
+
+.error-msg {
+    color: #e74c3c;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+.help-text {
+    color: #999;
+    font-size: 12px;
+    margin-top: 6px;
+}
+
+.help-text ul {
+    margin-left: 16px;
+}
+
+.form-footer {
+    margin-top: 16px;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ---------- 小屏适配 ---------- */
+@media (max-width: 640px) {
+    .navbar {
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px 20px;
+    }
+
+    .nav-links { gap: 14px; flex-wrap: wrap; justify-content: center; }
+
+    .container { margin: 24px auto; }
+
+    .post-header { flex-direction: column; }
+
+    .post-view h1 { font-size: 26px; }
+}

@@ -1,0 +1,52 @@
+<!-- 文件路径：blog/templates/blog/post_detail.html -->
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<article class="post-view">
+    <a class="category-tag" href="{% url 'index' %}?category={{ post.category.slug }}">{{ post.category.name }}</a>
+
+    <div class="post-header">
+        <h1>{{ post.title }}</h1>
+        <!-- 收藏按钮：仅登录用户可见 -->
+        {% if user.is_authenticated %}
+            <form method="post" action="{% url 'toggle_favorite' post.pk %}" class="fav-form">
+                {% csrf_token %}
+                <input type="hidden" name="next" value="{{ request.get_full_path }}" />
+                <button type="submit" class="fav-btn">
+                    {% if is_favorited %}&#x2665; 已收藏{% else %}&#9825; 收藏{% endif %}
+                    <span class="fav-count">{{ favorite_count }}</span>
+                </button>
+            </form>
+        {% else %}
+            <span class="fav-btn" title="登录后可收藏">&#9825; <span class="fav-count">{{ favorite_count }}</span></span>
+        {% endif %}
+    </div>
+
+    <p class="post-time">
+        发布于 <time datetime="{{ post.created_at|date:'c' }}">{{ post.created_at|date:"Y-m-d H:i" }}</time>
+        {% if post.was_updated %}· 更新于 {{ post.updated_at|date:"Y-m-d H:i" }}{% endif %}
+    </p>
+
+    {% if post.summary %}
+        <p class="post-summary">{{ post.summary }}</p>
+    {% endif %}
+
+    <div class="content">{{ post.content|safe }}</div>
+
+    <a href="{% url 'index' %}" class="back-link">← 返回首页</a>
+</article>
+
+{% if related_posts %}
+    <section class="related">
+        <h3>相关文章</h3>
+        <ul>
+            {% for item in related_posts %}
+                <li>
+                    <a href="{{ item.get_absolute_url }}">{{ item.title }}</a>
+                    <span class="card-date">{{ item.created_at|date:"Y-m-d" }}</span>
+                </li>
+            {% endfor %}
+        </ul>
+    </section>
+{% endif %}
+{% endblock %}

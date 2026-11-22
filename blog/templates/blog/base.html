@@ -1,0 +1,53 @@
+<!-- 文件路径：blog/templates/blog/base.html -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ title|default:"RUNOOB 博客" }}{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    {% block extra_head %}{% endblock %}
+</head>
+<body>
+    <!-- 导航栏：登出必须用 POST 表单（Django 5+ 的 LogoutView 不接受 GET） -->
+    <header class="navbar">
+        <a href="{% url 'index' %}" class="logo">RUNOOB 博客</a>
+        <nav class="nav-links">
+            <a href="{% url 'index' %}">首页</a>
+
+            {% if user.is_authenticated %}
+                {# 已登录：显示收藏入口、用户名和登出按钮（user 由上下文处理器自动注入） #}
+                <a href="{% url 'favorites' %}">我的收藏</a>
+                <span class="user-name">{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" class="logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="link-btn">登出</button>
+                </form>
+            {% else %}
+                {# 未登录：显示登录和注册链接 #}
+                <a href="{% url 'login' %}">登录</a>
+                <a href="{% url 'register' %}">注册</a>
+            {% endif %}
+        </nav>
+    </header>
+
+    <!-- 主内容区（子模板填充） -->
+    <main class="container">
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- 页脚 -->
+    <footer class="footer">
+        <p>© 2026 Debonair 博客. Powered by Django.</p>
+    </footer>
+</body>
+</html>
